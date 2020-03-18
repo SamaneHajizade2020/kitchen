@@ -1,0 +1,319 @@
+{
+	"info": {
+		"_postman_id": "4c44b3cf-09ea-4469-958d-c67e1984d2e1",
+		"name": "ServerlessKitchen",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Ping",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/ping",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"ping"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Clear",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/clear",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"clear"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetRecipes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/recipes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"recipes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateRecipe",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Chocolate Doughnuts\",\n    \"instructions\": \"Melt chocolate, dip the Doughnut\",\n    \"ingredients\": [\n        { \"name\": \"Chocolate\", \"quantity\": 4 },\n        { \"name\": \"Doughnut\", \"quantity\": 4 }\n    ]\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/recipes/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"recipes",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetRecipe-1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/recipes/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"recipes",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteRecipe-1",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/recipes/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"recipes",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateRecipe",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Chocolate Doughnuts v2\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/recipes/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"recipes",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MakeRecipe-1",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Chocolate Doughnuts v2\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/recipes/1/make",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"recipes",
+						"1",
+						"make"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetInventory",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/inventory",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"inventory"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FillInventory",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n    { \"name\": \"Sugar\", \"quantity\": 100 },\n    { \"name\": \"Cake mix\", \"quantity\": 50 }\n]"
+				},
+				"url": {
+					"raw": "http://localhost:8080/inventory/fill",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"inventory",
+						"fill"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetCountByRecipe",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/recipes/get-count-by-recipe",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"recipes",
+						"get-count-by-recipe"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "OptimizeTotalCount",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/recipes/optimize-total-count",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"recipes",
+						"optimize-total-count"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "OptimizeTotalWaste",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/recipes/optimize-total-waste",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"recipes",
+						"optimize-total-waste"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
