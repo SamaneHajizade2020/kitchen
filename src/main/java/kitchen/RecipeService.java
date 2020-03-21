@@ -16,5 +16,10 @@ public interface RecipeService {
 
     public abstract Collection<Ingredient> getIngredients();
     public abstract void removeIngredient(String id, Ingredient ingredient);
-    public abstract void createIngredient(Ingredient ingredient);
+    public abstract void removeIngredient(Ingredient ingredient);
+    public abstract void updateIngredient(String id, Ingredient ingredient);
+    public abstract Ingredient createIngredient(Ingredient ingredient);
+    public abstract Ingredient saveIngredient(Ingredient ingredient);
+    public abstract void deleteIngredient(String id);
+
 }

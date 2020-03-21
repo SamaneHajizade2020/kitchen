@@ -1,32 +1,16 @@
 package dao;
 
-public class Ingredient {
-
-   // @JsonIgnore()
-    private String id;
+public class MyElement {
 
     private  String name; // name, e.g. "Sugar"
     private  Integer quantity; // how much of this ingredient? Must be > 0
 
-    public Ingredient(String name, Integer quantity){
-        this.name= name;
-        this.quantity = quantity;
-    }
-
-    public Ingredient(String id, String name, Integer quantity) {
-       this.id = id;
+    public MyElement(String name, Integer quantity) {
         this.name = name;
         this.quantity = quantity;
     }
 
-    public Ingredient(){}
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public MyElement(){
     }
 
     public String getName() {

@@ -1,5 +1,6 @@
 package dao;
 
+import javax.lang.model.util.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +10,7 @@ public class Recipe {
     private String name;  // name of the recipe
     private String instructions;  // instructions & howto
     private List<Ingredient> ingredients ; // list of ingredients
-    //private Ingredients ingredients []; // list of ingredients
+    private MyElement elements []; // list of ingredients
 
 
     public void setId(String id) {
@@ -42,5 +43,13 @@ public class Recipe {
 
     public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public MyElement[] getElements() {
+        return elements;
+    }
+
+    public void setElements(MyElement[] elements) {
+        this.elements = elements;
     }
 }
