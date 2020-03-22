@@ -114,4 +114,10 @@ public class RecipeController {
         service.getCountByRecipe(service.getRecipes(), ingredientService.getIngredients());
         return new ResponseEntity<>(service.getResult(), HttpStatus.CREATED);
     }
+
+    @RequestMapping(value = "/recipes/optimize-total-count", method = RequestMethod.GET)
+    public ResponseEntity<Object> getRecipesOptimizeTotalCount() {
+        service.getCountByRecipe(service.getRecipes(), ingredientService.getIngredients());
+        return new ResponseEntity<>(service.getResult(), HttpStatus.CREATED);
+    }
 }

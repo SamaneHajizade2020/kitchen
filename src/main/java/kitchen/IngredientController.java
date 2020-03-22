@@ -7,13 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import org.apache.log4j.Logger;
-import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 public class IngredientController {
-
-    static final Logger logger = Logger.getLogger(IngredientController.class);
 
     @Autowired
     IngredientServiceImp service;

@@ -4,10 +4,14 @@ import dao.*;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
+
+import java.util.logging.Logger;
 
 @Service
 public class RecipeServiceImp implements RecipeService {
+    private final static Logger LOGGER = Logger.getLogger(RecipeServiceImp.class.getName());
 
     public static Map<String, Recipe> productRepo = new HashMap<>();
     public static Map<String, Ingredient> ingredientRepo = new HashMap<>();
@@ -98,7 +102,6 @@ public class RecipeServiceImp implements RecipeService {
         return resultRepo.values();
     }
 
-
     public void getCountByRecipe(Collection<Recipe> recipes, Collection<Ingredient> ingredients) {
         logForRecipe(recipes);
         logForIngredient(ingredients);
@@ -114,19 +117,19 @@ public class RecipeServiceImp implements RecipeService {
                                     os.getName().equals(ns.getName())))
                     .collect(Collectors.toList());
 
-            System.out.println("Ingredient that are in this recipe:" + ingredientOfIngredientsWhichAreInThisRecipe.size());
+            LOGGER.info("Ingredient that are in this recipe:" + ingredientOfIngredientsWhichAreInThisRecipe.size());
             logForIngredient(ingredientOfIngredientsWhichAreInThisRecipe);
 
             resultArr.addAll(ingredientsOfRecipe);
             resultArr.addAll(ingredientOfIngredientsWhichAreInThisRecipe);
-            System.out.println("resultArr:" + resultArr.size());
+            LOGGER.info("resultArr:" + resultArr.size());
             logForIngredient(resultArr);
 
             List<Ingredient> list = divOfQuantityForSameIngredient(resultArr);
             logForIngredient(list);
 
             Integer quantity =  finMinInList(list);
-            System.out.println("min by comprator" + quantity);
+            LOGGER.info("min by comprator" + quantity);
 
             resultRepo.put(String.valueOf(new Random().nextInt()),
                     new Result(String.valueOf(new Random().nextInt()), String.valueOf(quantity)));
@@ -144,24 +147,24 @@ public class RecipeServiceImp implements RecipeService {
     private void logForIngredient(Collection<Ingredient> ingredients) {
         System.out.printf("Size of ing" + ingredients.size());
         for (Ingredient ingredient : ingredients) {
-            System.out.println( " " + ingredient.getName() + " " + ingredient.getQuantity());
+            LOGGER.info( " " + ingredient.getName() + " " + ingredient.getQuantity());
         }
     }
 
     private void logForRecipe(Recipe recipe) {
-        System.out.println("Ingredient of recipe" + recipe.getId());
+        LOGGER.info("Ingredient of recipe" + recipe.getId());
         for (Ingredient ingredient : recipe.getIngredients()) {
-            System.out.println( " " + ingredient.getName() + " " + ingredient.getQuantity());
+            LOGGER.info( " " + ingredient.getName() + " " + ingredient.getQuantity());
         }
     }
 
     private void logForRecipe(Collection<Recipe> recipes) {
         System.out.printf("size of recipe" + recipes.size() + " " );
         for (Recipe recipe : recipes) {
-            System.out.println( recipe.getId() + " " + recipe.getName() + recipe.getInstructions() + " " + recipe.getIngredients().size());
+            LOGGER.info( recipe.getId() + " " + recipe.getName() + recipe.getInstructions() + " " + recipe.getIngredients().size());
             List<Ingredient> ingredients1 = recipe.getIngredients();
             for (Ingredient ingredient : ingredients1) {
-                System.out.println( " " + ingredient.getName() + " " + ingredient.getQuantity());
+                LOGGER.info( " " + ingredient.getName() + " " + ingredient.getQuantity());
             }
         }
     }
@@ -172,9 +175,8 @@ public class RecipeServiceImp implements RecipeService {
             for (int j = 0; j < i; j++) {
                 if ((listIngredient.get(i).getName().equalsIgnoreCase(listIngredient.get(j).getName()) && ( i !=j)
                         && (listIngredient.get(i).getQuantity()!= 0) && (listIngredient.get(j).getQuantity()!= 0)))  {
-                    System.out.println("name:" + listIngredient.get(i).getName() + " " + "Quantity:" + listIngredient.get(i).getQuantity());
-                    System.out.println("name:" + listIngredient.get(j).getName() + " " + "Quantity:" + listIngredient.get(j).getQuantity());
-                    System.out.println(true);
+                    LOGGER.info("name:" + listIngredient.get(i).getName() + " " + "Quantity:" + listIngredient.get(i).getQuantity());
+                    LOGGER.info("name:" + listIngredient.get(j).getName() + " " + "Quantity:" + listIngredient.get(j).getQuantity());
                     int resut = ((listIngredient.get(i).getQuantity()) / (listIngredient.get(j).getQuantity()));
                     result.add(new Ingredient(String.valueOf(new Random().nextInt()),listIngredient.get(i).getName(), resut));
                 }
@@ -183,8 +185,5 @@ public class RecipeServiceImp implements RecipeService {
 
         return result;
     }
-
-    UUID uuid = UUID.randomUUID();
-    String randomUUIDString = uuid.toString();
 
 }

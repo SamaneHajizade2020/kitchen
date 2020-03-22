@@ -1,8 +1,10 @@
 package dao;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Ingredient {
 
-   // @JsonIgnore()
+    @JsonIgnore()
     private String id;
 
     private  String name; // name, e.g. "Sugar"

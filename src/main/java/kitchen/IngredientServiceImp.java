@@ -1,12 +1,9 @@
 package kitchen;
 
 import dao.Ingredient;
-import dao.MyElement;
-import dao.Result;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
-import javax.xml.bind.Element;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -16,46 +13,7 @@ import static kitchen.RecipeServiceImp.ingredientRepo;
 @Service
 public class IngredientServiceImp implements IngredientService {
 
-    static final Logger logger = Logger.getLogger(IngredientServiceImp.class);
-    RecipeServiceImp recipeServiceImp;
-
-
-
-/*    static {
-        MyElement MyElement = new MyElement( "suger", 1);
-        MyElement MyElement2 = new MyElement( "flor", 10);
-        MyElement MyElement3 = new MyElement( " Brown suger", 1);
-        MyElement MyElement4 = new MyElement( "vanilla", 2);
-
-        MyElement myElementList [] = {MyElement, MyElement2, MyElement3 ,MyElement4};
-    }*/
-
-/*    public static Map<String, Ingredient> ingredientRepo = new HashMap<>();
-
-
-    static {
-
-        Ingredient ingredient1 = new Ingredient("1", "suger", 1);
-        Ingredient ingredient2 = new Ingredient("2", "flor", 10);
-        Ingredient ingredient11 = new Ingredient("10", " Brown suger", 1);
-        Ingredient ingredient22 = new Ingredient("110", "vanilla", 2);
-
-
-        ingredientRepo.put(ingredient1.getId(), ingredient1);
-        ingredientRepo.put(ingredient2.getId(), ingredient2);
-        ingredientRepo.put(ingredient11.getId(), ingredient11);
-        ingredientRepo.put(ingredient22.getId(), ingredient22);
-    }*/
-
-
-/*    private MyElement[] myElementList;
-
-
-    public Collection<Element> getElements(){
-        return null;
-    }*/
-
-
+    static final Logger LOGGER = Logger.getLogger(IngredientServiceImp.class);
 
     public Ingredient createIngredient(Ingredient ingredient){
         return   ingredientRepo.put(ingredient.getId(), ingredient);
@@ -71,10 +29,6 @@ public class IngredientServiceImp implements IngredientService {
         ingredientRepo.remove(id);
         ingredient.setId(id);
         ingredientRepo.put(id, ingredient);
-    }
-
-    public void saveIngredient(Integer id, Ingredient ingredient){
-        ingredientRepo.put(ingredient.getId(), ingredient);
     }
 
     @Override
@@ -120,20 +74,19 @@ public class IngredientServiceImp implements IngredientService {
         List<Ingredient> listResult = listDuplicateIngredient(ingredients);
         removeDuplicate(listResult);
     }
-
     public void removeDuplicateByLog(List<Ingredient> collect) {
         for (int i = 0; i < collect.size(); i++) {
             for (int j = 0; j < i; j++) {
-                logger.info("i" + i +  " " +"j" + j);
-                logger.info(collect.get(i).getName() + "/n" + collect.get(j).getName());
+                LOGGER.info("i" + i +  " " +"j" + j);
+                LOGGER.info(collect.get(i).getName() + "/n" + collect.get(j).getName());
 
-                System.out.println(collect.get(i).getName().equalsIgnoreCase(collect.get(j).getName()));
-                System.out.println((collect.get(i).getQuantity().compareTo(collect.get(j).getQuantity())==0));
-                System.out.println((i!=j));
+                LOGGER.info(collect.get(i).getName().equalsIgnoreCase(collect.get(j).getName()));
+                LOGGER.info((collect.get(i).getQuantity().compareTo(collect.get(j).getQuantity())==0));
+                LOGGER.info((i!=j));
                 if ((collect.get(i).getName().equalsIgnoreCase(collect.get(j).getName())) &&
                         (collect.get(i).getQuantity().compareTo(collect.get(j).getQuantity())==0)
                         && (i!=j)){
-                    logger.debug("*******remove ing*****");
+                    LOGGER.debug("*******remove ing*****");
                     Ingredient ingredient = collect.get(i);
                     deleteIngredient(ingredient.getId());
                 }
