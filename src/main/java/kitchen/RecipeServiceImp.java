@@ -1,62 +1,63 @@
 package kitchen;
 
-import dao.MyElement;
-import dao.Ingredient;
-import dao.MyElement;
-import dao.Recipe;
+import dao.*;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class RecipeServiceImp implements RecipeService {
 
     public static Map<String, Recipe> productRepo = new HashMap<>();
     public static Map<String, Ingredient> ingredientRepo = new HashMap<>();
+    public static Map<String, Result> resultRepo = new HashMap<>();
 
 
-    static {
-
-        // ArrayList<Ingredient> ingredientArrayList = new ArrayList();
-        Recipe honeyCake = new Recipe();
-        honeyCake.setId("1");
-        honeyCake.setName("HoneyCake");
-        honeyCake.setInstructions("HoneyCake is mixed of honey and milk and suger!");
-
-
-        Ingredient ingredient1 = new Ingredient("1", "suger", 1);
-        Ingredient ingredient2 = new Ingredient("2", "flor", 10);
-        Ingredient ingredient11 = new Ingredient("10", " Brown suger", 1);
-        Ingredient ingredient22 = new Ingredient("110", "vanilla", 2);
-
-/*        Ingredient ingredient1 = new Ingredient( "suger", 1);
-        Ingredient ingredient2 = new Ingredient( "flor", 10);
-        Ingredient ingredient11 = new Ingredient( " Brown suger", 1);
-        Ingredient ingredient22 = new Ingredient( "vanilla", 2);*/
-
-        MyElement MyElement = new MyElement( "suger", 1);
-        MyElement MyElement2 = new MyElement( "flor", 10);
-        MyElement MyElement3 = new MyElement( " Brown suger", 1);
-        MyElement MyElement4 = new MyElement( "vanilla", 2);
-        MyElement MyElementList [] = {MyElement, MyElement2, MyElement3 ,MyElement4};
-
-        honeyCake.setIngredients(Arrays.asList(ingredient1,ingredient2));
-        productRepo.put(honeyCake.getId(), honeyCake);
-
-        Recipe almondCake = new Recipe();
-        almondCake.setId("2");
-        almondCake.setName("AlmondCake");
-        almondCake.setInstructions("almondCake is mixed of almond and milk and suger!");
-        almondCake.setIngredients(Arrays.asList(ingredient11,ingredient22));
-        almondCake.setElements(MyElementList);
-
-        productRepo.put(almondCake.getId().toString(), almondCake);
-
-        ingredientRepo.put(ingredient1.getId(), ingredient1);
-        ingredientRepo.put(ingredient2.getId(), ingredient2);
-        ingredientRepo.put(ingredient11.getId(), ingredient11);
-        ingredientRepo.put(ingredient22.getId(), ingredient22);
-    }
+//
+//
+//    static {
+//
+//        // ArrayList<Ingredient> ingredientArrayList = new ArrayList();
+//        Recipe honeyCake = new Recipe();
+//        honeyCake.setId("1");
+//        honeyCake.setName("HoneyCake");
+//        honeyCake.setInstructions("HoneyCake is mixed of honey and milk and suger!");
+//
+//
+//        Ingredient ingredient1 = new Ingredient("1", "suger", 1);
+//        Ingredient ingredient2 = new Ingredient("2", "flor", 10);
+//        Ingredient ingredient11 = new Ingredient("10", " Brown suger", 1);
+//        Ingredient ingredient22 = new Ingredient("110", "vanilla", 2);
+//
+////       Ingredient ingredient1 = new Ingredient( "suger", 1);
+////        Ingredient ingredient2 = new Ingredient( "flor", 10);
+////        Ingredient ingredient11 = new Ingredient( " Brown suger", 1);
+////        Ingredient ingredient22 = new Ingredient( "vanilla", 2);*/
+////
+////        MyElement MyElement = new MyElement( "suger", 1);
+////        MyElement MyElement2 = new MyElement( "flor", 10);
+////        MyElement MyElement3 = new MyElement( " Brown suger", 1);
+////        MyElement MyElement4 = new MyElement( "vanilla", 2);
+////        MyElement MyElementList [] = {MyElement, MyElement2, MyElement3 ,MyElement4};*/
+//
+//        honeyCake.setIngredients(Arrays.asList(ingredient1,ingredient2));
+//        productRepo.put(honeyCake.getId(), honeyCake);
+//
+//        Recipe almondCake = new Recipe();
+//        almondCake.setId("2");
+//        almondCake.setName("AlmondCake");
+//        almondCake.setInstructions("almondCake is mixed of almond and milk and suger!");
+//        almondCake.setIngredients(Arrays.asList(ingredient11,ingredient22));
+//        //almondCake.setElements(MyElementList);
+//
+//        productRepo.put(almondCake.getId(), almondCake);
+//
+//        ingredientRepo.put(ingredient1.getId(), ingredient1);
+//        ingredientRepo.put(ingredient2.getId(), ingredient2);
+//        ingredientRepo.put(ingredient11.getId(), ingredient11);
+//        ingredientRepo.put(ingredient22.getId(), ingredient22);
+//    }
     
     @Override
     public void createRecipe(Recipe Recipe) {
@@ -92,88 +93,98 @@ public class RecipeServiceImp implements RecipeService {
         return productRepo.values();
     }
 
-    @Override
-    public  void removeIngredient(String id, Ingredient ingredient){
-        ingredientRepo.remove(id, ingredient);
-    }
 
-    @Override
-    public  void removeIngredient( Ingredient ingredient){
-        ingredientRepo.remove( ingredient);
-    }
-
-    public Collection<Ingredient> getIngredients(){
-        return ingredientRepo.values();
+    public  Collection<Result> getResult(){
+        return resultRepo.values();
     }
 
 
-    public Ingredient createIngredient(Ingredient ingredient){
-      return   ingredientRepo.put(ingredient.getId(), ingredient);
+    public void getCountByRecipe(Collection<Recipe> recipes, Collection<Ingredient> ingredients) {
+        logForRecipe(recipes);
+        logForIngredient(ingredients);
+        for (Recipe recipe : recipes) {
+            ArrayList<Ingredient> resultArr= new ArrayList<>();
+            List<Ingredient> ingredientsOfRecipe = recipe.getIngredients();
+
+            logForRecipe(recipe);
+
+            List<Ingredient> ingredientOfIngredientsWhichAreInThisRecipe = ingredients.stream()
+                    .filter(os -> ingredientsOfRecipe.stream()                    // filter
+                            .anyMatch(ns ->                                  // compare both
+                                    os.getName().equals(ns.getName())))
+                    .collect(Collectors.toList());
+
+            System.out.println("Ingredient that are in this recipe:" + ingredientOfIngredientsWhichAreInThisRecipe.size());
+            logForIngredient(ingredientOfIngredientsWhichAreInThisRecipe);
+
+            resultArr.addAll(ingredientsOfRecipe);
+            resultArr.addAll(ingredientOfIngredientsWhichAreInThisRecipe);
+            System.out.println("resultArr:" + resultArr.size());
+            logForIngredient(resultArr);
+
+            List<Ingredient> list = divOfQuantityForSameIngredient(resultArr);
+            logForIngredient(list);
+
+            Integer quantity =  finMinInList(list);
+            System.out.println("min by comprator" + quantity);
+
+            resultRepo.put(String.valueOf(new Random().nextInt()),
+                    new Result(String.valueOf(new Random().nextInt()), String.valueOf(quantity)));
+        }
+
     }
 
-    public Ingredient saveIngredient(Ingredient ingredient){
-        return   ingredientRepo.put(ingredient.getName(), ingredient);
+    private Integer finMinInList(List<Ingredient> list) {
+        return list
+                .stream()
+                .min(Comparator.comparing(Ingredient::getQuantity))
+                .get().getQuantity();
     }
 
-
-    @Override
-    public void updateIngredient(String id, Ingredient ingredient){
-            ingredientRepo.remove(id);
-            ingredient.setId(id);
-            ingredientRepo.put(id, ingredient);
-    }
-
-    public void saveIngredient(Integer id, Ingredient ingredient){
-        ingredientRepo.put(ingredient.getId(), ingredient);
-    }
-
-    @Override
-    public void deleteIngredient(String id){
-        ingredientRepo.remove(id);
-    }
-
-/*    public ResponseEntity<Object> createIngredient(@RequestBody ArrayList<Ingredient> ingredients) {
-
-//        if(ingredient.getQuantity() <= 0)
-//            return  new ResponseEntity<>("Rejected", HttpStatus.NOT_ACCEPTABLE);
-
-        // controlIngredientQuantity(ingredient);
-
+    private void logForIngredient(Collection<Ingredient> ingredients) {
+        System.out.printf("Size of ing" + ingredients.size());
         for (Ingredient ingredient : ingredients) {
-            createIngredient(ingredient);
+            System.out.println( " " + ingredient.getName() + " " + ingredient.getQuantity());
         }
-        return new ResponseEntity<>("Product is created successfully", HttpStatus.CREATED);
     }
-*/
-/*
-    public void controlIngredientQuantity(Ingredient ingredient) {
 
-        ArrayList<Ingredient> items = listOfIngredients();
+    private void logForRecipe(Recipe recipe) {
+        System.out.println("Ingredient of recipe" + recipe.getId());
+        for (Ingredient ingredient : recipe.getIngredients()) {
+            System.out.println( " " + ingredient.getName() + " " + ingredient.getQuantity());
+        }
+    }
 
-        for (Ingredient ingredient1 : getIngredients()) {
-            if (items.contains(ingredient1.getName()))
-            {
-                Integer sum = items.stream()
-                        .map(x -> x.getQuantity())
-                        .reduce(0, Integer::sum);
-
-                ingredient1.setQuantity(sum);
+    private void logForRecipe(Collection<Recipe> recipes) {
+        System.out.printf("size of recipe" + recipes.size() + " " );
+        for (Recipe recipe : recipes) {
+            System.out.println( recipe.getId() + " " + recipe.getName() + recipe.getInstructions() + " " + recipe.getIngredients().size());
+            List<Ingredient> ingredients1 = recipe.getIngredients();
+            for (Ingredient ingredient : ingredients1) {
+                System.out.println( " " + ingredient.getName() + " " + ingredient.getQuantity());
             }
-            updateIngredient(ingredient1.getId(), ingredient1);
         }
-
     }
 
-    private ArrayList<Ingredient> listOfIngredients() {
-        ArrayList<Ingredient> items = new ArrayList<>();
-
-        for (Ingredient x : getIngredients()) {
-            items.add(x);
+    public List<Ingredient> divOfQuantityForSameIngredient(List<Ingredient> listIngredient) {
+        ArrayList<Ingredient> result= new ArrayList<>();
+        for (int i = 0; i < listIngredient.size(); i++) {
+            for (int j = 0; j < i; j++) {
+                if ((listIngredient.get(i).getName().equalsIgnoreCase(listIngredient.get(j).getName()) && ( i !=j)
+                        && (listIngredient.get(i).getQuantity()!= 0) && (listIngredient.get(j).getQuantity()!= 0)))  {
+                    System.out.println("name:" + listIngredient.get(i).getName() + " " + "Quantity:" + listIngredient.get(i).getQuantity());
+                    System.out.println("name:" + listIngredient.get(j).getName() + " " + "Quantity:" + listIngredient.get(j).getQuantity());
+                    System.out.println(true);
+                    int resut = ((listIngredient.get(i).getQuantity()) / (listIngredient.get(j).getQuantity()));
+                    result.add(new Ingredient(String.valueOf(new Random().nextInt()),listIngredient.get(i).getName(), resut));
+                }
+            }
         }
-        return items;
+
+        return result;
     }
-*/
 
-
+    UUID uuid = UUID.randomUUID();
+    String randomUUIDString = uuid.toString();
 
 }

@@ -7,7 +7,7 @@ import java.util.Collection;
 
 public interface IngredientService {
 
-    public Collection<Element> getElements();
+   // public Collection<Element> getElements();
     public abstract Ingredient createIngredient(Ingredient ingredient);
     public abstract Ingredient saveIngredient(Ingredient ingredient);
     public abstract void deleteIngredient(String id);

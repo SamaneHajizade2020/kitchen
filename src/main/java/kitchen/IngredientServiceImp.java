@@ -2,28 +2,35 @@ package kitchen;
 
 import dao.Ingredient;
 import dao.MyElement;
+import dao.Result;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.xml.bind.Element;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static kitchen.RecipeServiceImp.ingredientRepo;
 
 
 @Service
 public class IngredientServiceImp implements IngredientService {
 
+    static final Logger logger = Logger.getLogger(IngredientServiceImp.class);
+    RecipeServiceImp recipeServiceImp;
 
-    static {
+
+
+/*    static {
         MyElement MyElement = new MyElement( "suger", 1);
         MyElement MyElement2 = new MyElement( "flor", 10);
         MyElement MyElement3 = new MyElement( " Brown suger", 1);
         MyElement MyElement4 = new MyElement( "vanilla", 2);
 
         MyElement myElementList [] = {MyElement, MyElement2, MyElement3 ,MyElement4};
-    }
+    }*/
 
-    public static Map<String, Ingredient> ingredientRepo = new HashMap<>();
+/*    public static Map<String, Ingredient> ingredientRepo = new HashMap<>();
 
 
     static {
@@ -38,15 +45,15 @@ public class IngredientServiceImp implements IngredientService {
         ingredientRepo.put(ingredient2.getId(), ingredient2);
         ingredientRepo.put(ingredient11.getId(), ingredient11);
         ingredientRepo.put(ingredient22.getId(), ingredient22);
-    }
+    }*/
 
 
-    private MyElement[] myElementList;
+/*    private MyElement[] myElementList;
 
 
     public Collection<Element> getElements(){
         return null;
-    }
+    }*/
 
 
 
@@ -88,6 +95,77 @@ public class IngredientServiceImp implements IngredientService {
     @Override
     public  void removeIngredient(String id, Ingredient ingredient){
         ingredientRepo.remove(id, ingredient);
+    }
+
+
+    public void controlIngredientQuantity() {
+        List<Ingredient> newListOFDuplicateIngredient = new ArrayList<>();
+        Collection<Ingredient> ingredients = getIngredients();
+
+        List<Ingredient> listDuplicateIngredient = listDuplicateIngredient(ingredients);
+
+        for (Ingredient ingredient : listDuplicateIngredient) {
+            Ingredient newIngredient = new Ingredient(ingredient.getName(), sumOfSameQuantity(listDuplicateIngredient, ingredient));
+            newListOFDuplicateIngredient.add(newIngredient);
+            deleteIngredient(ingredient.getId());
+        }
+
+        for (Ingredient newIngredient : newListOFDuplicateIngredient) {
+            createIngredient(new Ingredient(
+                    String.valueOf(new Random().nextInt()),
+                    newIngredient.getName(),
+                    newIngredient.getQuantity()));
+        }
+
+        List<Ingredient> listResult = listDuplicateIngredient(ingredients);
+        removeDuplicate(listResult);
+    }
+
+    public void removeDuplicateByLog(List<Ingredient> collect) {
+        for (int i = 0; i < collect.size(); i++) {
+            for (int j = 0; j < i; j++) {
+                logger.info("i" + i +  " " +"j" + j);
+                logger.info(collect.get(i).getName() + "/n" + collect.get(j).getName());
+
+                System.out.println(collect.get(i).getName().equalsIgnoreCase(collect.get(j).getName()));
+                System.out.println((collect.get(i).getQuantity().compareTo(collect.get(j).getQuantity())==0));
+                System.out.println((i!=j));
+                if ((collect.get(i).getName().equalsIgnoreCase(collect.get(j).getName())) &&
+                        (collect.get(i).getQuantity().compareTo(collect.get(j).getQuantity())==0)
+                        && (i!=j)){
+                    logger.debug("*******remove ing*****");
+                    Ingredient ingredient = collect.get(i);
+                    deleteIngredient(ingredient.getId());
+                }
+            }
+        }
+    }
+    public void removeDuplicate(List<Ingredient> listIngredient) {
+        for (int i = 0; i < listIngredient.size(); i++) {
+            for (int j = 0; j < i; j++) {
+                if ((listIngredient.get(i).getName().equalsIgnoreCase(listIngredient.get(j).getName())) &&
+                        (listIngredient.get(i).getQuantity().compareTo(listIngredient.get(j).getQuantity())==0)
+                        && (i!=j)){
+                    Ingredient ingredient = listIngredient.get(i);
+
+                    if(ingredient != null){
+                        deleteIngredient(ingredient.getId());}
+                }
+            }
+        }
+    }
+    public Integer sumOfSameQuantity(List<Ingredient> ingredients, Ingredient ingredient){
+        return ingredients.stream()
+                .filter(customer -> ingredient.getName().equals(customer.getName())).map(x -> x.getQuantity()).reduce(0, Integer::sum);
+
+    }
+    public List<Ingredient> listDuplicateIngredient(Collection<Ingredient> ingredients) {
+        return ingredients.stream()
+                .collect(Collectors.groupingBy(Ingredient:: getName))
+                .entrySet().stream()
+                .filter(e -> e.getValue().size() > 1)
+                .flatMap(e -> e.getValue().stream())
+                .collect(Collectors.toList());
     }
 
 
